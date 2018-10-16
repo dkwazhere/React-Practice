@@ -1,0 +1,378 @@
+Dependencies Management tools - NPM or Yarn.
+Bundler - will be using Webpack.
+Compiler(next gen javascript) - Babel
+Development Server - To test our app locally on our machine.
+
+create-react-app
+
+package.json file
+React uses 3 dependencies: react, react-dom, react-scripts.
+scripts - can run the scripts with npm. uses react-scripts package to run scripts.
+
+node modules folder - holds all the dependencies and sub dependencies. (mostly react-scripts dependencies).
+
+(public) folder - It is basically the root folder served by the web server in the end.
+	index.html - its the single html page in the project.
+	all libraries will go into the html file.
+
+(src) folder: It is our actual react application.
+	index.js - gets access to the root element of our html file (div root).
+	it renders the application with the "render" method.
+	App.js - uses JSX
+	
+
+--JSX--
+render method: react will call this method to render to the screen.
+every react component has to "return" or "render" to the dom.
+Export - exports the file and makes it import-able.
+
+JSX looks like html but it is actually Javascript.
+
+comment everything out and write...
+return React.createElement('div', null, 'h1', 'Hi i\'m a react app!!!'
+
+createElement - takes up 3 arguments minimum.
+1. element we want to enter to the dom EX: 'div'.
+2. configuration. EX: null
+3. any amount of children. EX: 'h1', 'Hi, i\'m a react app!!'
+
+output: h1Hi, I'm a react app!
+
+-The h1 was created as a string and did not make the hi im a react app written as a header.
+
+We have to add another create.Element inside the third argument.
+EX: return React.createElement('div', null, React.createElement('h1', null, 'Does this work now?'));
+
+Now if we inspect it in dev tools the string was wrapped with h1
+
+We dont see CSS because we didnt define it within our code.
+We have to add {className: 'App'} to the null(2nd argument) and then we will be able to see css changes.
+
+
+JSX looks like html, but it is Javascript.
+class for example cannot be used because it is a reserved javascript word.
+that is why we have to use "className".
+
+JSX must have one root element. Must be nested in one root.
+<div>
+	everything nested here.
+</div>
+EX: we cannot have <h1>something</h1> under the root </div>
+
+--Components--
+as of now we only have 1 component and it is the App.js component.
+in the Src folder created another folder called "Person"
+	-make sure you capitalize the Component name (it is a convention we use for react".
+
+inside the Person folder, creat a Person.js file.
+
+a component is just a function that returns html.
+should create a component as a function.
+we will be using es6 to create the function.
+
+const person = () => {
+
+}
+
+the function can be Lower or Capital cased.
+we use es6 function for this upper example.
+
+now we will return a simple <p></p>
+
+ex:
+const person = () => {
+    return <p>I'm a person</p>
+}
+
+what are we missing to make this component useable?
+1. We must import React from 'react'.
+	-we dont need a {component} import because we are not using class extend, we are just creating a function.
+2. We must export the function by using "export default person"
+
+
+finished component will look like this...
+EX:
+import React from 'react';
+
+const person = () => {
+    return <p>I'm a person</p>
+}
+
+export default person;
+
+
+Now we can start using this component in other files of our project.
+
+We head over to our App.js file and we import our Person component.
+we will import by using this piece of code below.
+import Person from './Person/Person';
+	-we can omit the .js because its added automatically by the build workflow.
+	-we should use uppercase characters for this, because in JSX all elements starting with lower case is usually reserved for native html elements. ex: div, h1, p etc.
+	
+Now we can add our component by going into our nest/root and adding <Person></Person> or <Person />.
+You should see the component in the dom.
+
+
+What is the benefit/advantage with using components instead of writing it in the root?????????
+-Maintable.
+-Reuseable and configurable ex: <Person /> <Person /> <Person /> 
+
+As of now our project is static we can make it dynamic.
+
+we first go to person.js file
+and we add return <p>I'm a person and I am Math.floor(Math.random() * 30)  years old!</p>
+when we look out our DOM, it just writes the math function as a string.
+
+I'm a person and I am Math.floor(Math.random() * 30) years old!
+
+I'm a person and I am Math.floor(Math.random() * 30) years old!
+
+I'm a person and I am Math.floor(Math.random() * 30) years old!
+
+How would JSX know its Javascript code?
+
+-we have to wrap the code in single curly braces {}.
+ex:
+return <p>I'm a person and I am {Math.floor(Math.random() * 30)}  years old!</p>
+
+now when we look at our dom we see ...
+I'm a person and I am 9 years old!
+
+I'm a person and I am 16 years old!
+
+I'm a person and I am 4 years old!
+
+
+-- PROPS --
+We want to make things dynamic and set configurations.
+        <Person name="David" age="26" />
+        <Person name="Stephanie" age="29">My hobbies: Racing </Person>
+        <Person name="Joan" age="25" />
+	when we see our dom it didnt change anything
+	
+We have to add props into our component to set configurations.
+ex:
+const person = (props) => {
+    return <p>I'm {props.name} and I am {props.age}  years old!</p>
+}
+
+output.. 
+
+I'm David and I am 26 years old!
+
+I'm Stephanie and I am 29 years old!
+
+I'm Joan and I am 25 years old!
+
+
+We now have a reusable component which have a template.
+
+but what about the hobbies on stephanie's component?
+
+we have to wrap the root of the component with parenthesis and add <div></div>
+then we add another <p></p> and inside create {props.children}.
+ex: import React from 'react';
+
+const person = (props) => {
+    return (
+    <div>
+        <p>I'm {props.name} and I am {props.age}  years old!</p>
+        <p>{props.children}</p>
+    </div>
+    )
+}
+
+export default person;
+
+-children refers to any element/elements within the opening and closing tag of our component.
+
+
+--State--
+a class has properties.
+state only works in components and not functions.
+
+state is managed inside a component, and state is only available in components that is used with extending only.
+we initialize state by assigning a value by making it an object.
+
+  state = {
+    
+  }
+  
+we build our state ex: 
+  state = {
+    persons: [
+      { name: 'David', age: 26 },
+      { name: 'Stephanie', age: 29 },
+      { name: 'Joan', age: 25 }
+    ]
+  }
+  
+  
+we then go to our person component nested in our app and access state by using "this" keyword
+"this" refers to the class. ex: class App
+
+we can access our state by using curly braces and digging through the state object/array.
+
+        <Person name={this.state.persons[0].name} age={this.state.persons[0].age} />
+        <Person name={this.state.persons[0].name} age={this.state.persons[0].age}> My hobbies: Racing </Person>
+        <Person name={this.state.persons[2].name} age={this.state.persons[2].age} />
+		
+
+		
+		
+		
+-- Events --
+We will be handling the event button. and editting the state.
+onclick will be onClick in jsx.
+
+we create a method under the state.
+if we assign a function as a value it becomes a method.
+
+switchNameHandler = () => {
+	console.log('was clicked');
+}
+
+on our button we use curly braces and do not add parenthesis. we only want to reference it.
+
+<button onClick={this.switchNameHandler}>Switch Names</button>
+
+for the switch handler we can change names by accessing the state within switchNameHandler function.
+ex:       this.setState({    
+      persons: [
+      { name: 'example', age: 200 },
+      { name: 'yessir', age: 290000 },
+      { name: 'Joanne', age: 27 }
+    ] })
+  }
+
+
+
+--------------------------------------------------
+-when creating a component as a function we cannot use state in there.
+-should use arrow function as often as possible.
+-application state should be used in certain containers such as App.js
+-can pass methods as props.
+
+IF We want to pass a value to our function.
+add the argument to the function + add the argument to the name you want to replace.
+ex:   
+switchNameHandler = (newName) => {
+    console.log('was clicked');
+    // dont do this -> this.state.persons[0].name = '김장혁';
+    this.setState({    
+      persons: [
+      { name: newName, age: 26 },
+      { name: '스태파니', age: 29 },
+      { name: '김재원', age: 27 }
+    ] })
+  }
+  
+ then we bind the method as so..
+ EX: 
+ <button onClick={this.switchNameHandler.bind(this, '김장혁')}>Switch Names</button>
+ 
+	we can also add the bind to the method of the 2nd person to change it to a different name when clicking stephanie.
+	        <Person 
+        name={this.state.persons[1].name} 
+        age={this.state.persons[1].age}
+        click={this.switchNameHandler.bind(this, '기ㅁ')}> My hobbies: Racing </Person>
+        <Person 
+		
+		
+	an alternative is to use an arrow function 
+	which then "returns" the this.switchNameHandler
+	EX: <button onClick={() => this.switchNameHandler('Chimichanga')}>Switch Names</button>
+
+Recommended to use the Former method instead of the latter though. (use the bind syntax instead).
+		
+
+-------Now we want to change the name ourselves--------
+We first start with going into our Person component file and adding an input.
+EX: <input type='text' onChange={props.changed} />
+
+we then add another function called nameChangedHanlder with an argument of event.
+we will add this below the switchNameHandler..
+EX:   nameChangedHandler = (event) => {
+    this.setState({    
+      persons: [
+      { name: "dk", age: 2600 },
+      { name: event.target.value, age: 29 },
+      { name: 'HelloKitty', age: 27 }
+    ] })
+  }
+  - the target is the input element.
+  - the value of the target is what we entered.
+  
+  
+  
+we use the same names but for the second person we will add event.target.value
+we then have to add the method into the 2nd person.
+
+changed={this.nameChangedHandler}> My hobbies: Racing </Person>
+now if you save it, you should see the name update real time on the 2nd person.
+but for the 1st and 2nd you shouldnt see any changes.
+
+this shows us 2 things, how we can dynamically update something, and also how we can handle inputs.
+
+for the two way binding we add "value={props.name}" inside the input.
+ex: <input type='text' onChange={props.changed} value={props.name} />
+
+by doing value={props.name} the names will be shown in the input boxes
+
+
+
+-----------adding styling with stylesheets-------------
+styling components is something very important.
+first we need to add a css file in the person's component.
+Very important to know.. that the CSS file we just made is GLOBAL!!!
+so we will define css class 
+ex: .Person {
+
+}
+
+and also we need to give Person.js a className.
+
+import React from 'react';
+
+const person = (props) => {
+    return (
+    <div className="Person">
+        <p onClick={props.click}>I'm {props.name} and I am {props.age}  years old!</p>
+        <p>{props.children}</p>
+        <input type='text' onChange={props.changed} value={props.name} />
+    </div>
+    )
+};
+
+export default person;
+
+
+now in the css file we can change the styling to just the person component.
+EX: 
+.Person {
+    width: 60%;
+    margin: auto;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 3px #ccc;
+    padding: 16px;
+    text-align: center;
+}
+
+
+
+When we save the css and the person component file.
+NOTHING HAPPENS?!@?!?!?!
+
+why?
+
+because we have to import the css file into our person's.js component file.
+EX: import './Person.css';
+	-we can only omit .js in javascript files not css files.
+
+this is done thanks to webpacks. we can import css into javascript without merging them.
+
+
+
+
+
+
